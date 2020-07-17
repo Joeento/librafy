@@ -1,0 +1,19 @@
+{
+  "name": "librafy",
+  "version": "1.0.0",
+  "description": "An API for managing librarians, users and the books that they love.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Joeento/librafy.git"
+  },
+  "author": "Eric Kudler <joeento@gmail.com> (http://erickudler.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Joeento/librafy/issues"
+  },
+  "homepage": "https://github.com/Joeento/librafy#readme"
+}
