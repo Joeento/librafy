@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const config = require('./config');
+const auth = require('./middleware/auth');
 
 const Book = require('./models/Book');
 
@@ -21,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-router.get('/books/overdue', async (req, res) => {
+router.get('/books/overdue', auth.librarianGate, async (req, res) => {
 	const current_date = new Date();
 
 	try {
@@ -37,7 +38,7 @@ router.get('/books/overdue', async (req, res) => {
 	}
 });
 
-router.post('/books', async (req, res) => {
+router.post('/books', auth.librarianGate, async (req, res) => {
 	const data = req.body;
 	data.available = true;
 	const book = new Book(data);
@@ -50,7 +51,7 @@ router.post('/books', async (req, res) => {
 	}
 });
 
-router.delete('/book/:id', async (req, res) => {
+router.delete('/book/:id', auth.librarianGate, async (req, res) => {
 	const id = req.params.id;
 	try {
 		await Book.findByIdAndDelete(id);
