@@ -15,7 +15,10 @@ const app = express();
 app.use(cors());
 const router = express.Router();
 
-mongoose.connect(config.mongo_url, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(config.mongo_url, {
+	useUnifiedTopology: true,
+	useNewUrlParser: true
+});
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
