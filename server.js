@@ -10,6 +10,7 @@ const auth = require('./middleware/auth');
 const Book = require('./models/Book');
 
 const API_PORT = config.api_port;
+const CHECKOUT_TIME = 14;
 
 const app = express();
 app.use(cors());
@@ -62,6 +63,50 @@ router.delete('/book/:id', auth.librarianGate, async (req, res) => {
   } catch (e) {
     res.json({success: false, error: e.message});
   }
+});
+
+router.post('/books/checkout', auth.userGate, async (req, res) => {
+  const user = req.user;
+	const isbn = req.body.isbn;
+
+	try {
+		const books_checked_out = await Book.find({
+			available: false,
+			checked_out_by: user._id
+		});
+
+		if (books_checked_out.length >= 3) {
+			throw new Error('You currently have too many books checked out.  Please return some and try again.');
+		}
+
+		const bookIsOverDue = (book) => book.due_date < new Date();
+		const hasOverdueBooks = books_checked_out.some(bookIsOverDue);
+
+		if (hasOverdueBooks) {
+			throw new Error('You currently have an overdue book.  Please return it and try again.');
+		}
+
+		const books_available = await Book.find({
+			available: true,
+			isbn: isbn
+		});
+
+		if (books_available.length == 0) {
+			throw new Error('There are no copies of that book currently available.  Please try again later.');
+		}
+
+		let due_date = new Date();
+		due_date.setDate(due_date.getDate() + parseInt(CHECKOUT_TIME));
+
+		const book = books_available[0];
+		book.available = false;
+		book.checked_out_by = user._id;
+		book.due_date = due_date;
+		const updated_book = await book.save();
+		res.json({success: true, book: updated_book});
+	} catch (e) {
+		res.json({success: false, error: e.message});
+	}
 });
 
 app.use('/api', router);
