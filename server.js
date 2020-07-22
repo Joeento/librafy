@@ -134,6 +134,21 @@ router.post('/books/return', auth.userGate, async (req, res) => {
 	}
 });
 
+router.post('/user/checked-out', auth.userGate, async (req, res) => {
+	const user = req.user;
+
+	try {
+		const books = await Book.find({
+			available: false,
+			checked_out_by: user._id,
+		});
+
+		res.json({success: true, books: books});
+	} catch (e) {
+		res.json({success: false, error: e.message});
+	}
+});
+
 app.use('/api', router);
 
 app.listen(API_PORT, () => console.log('LISTENING ON PORT ' + API_PORT));
