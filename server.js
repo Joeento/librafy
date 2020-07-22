@@ -109,6 +109,31 @@ router.post('/books/checkout', auth.userGate, async (req, res) => {
 	}
 });
 
+router.post('/books/return', auth.userGate, async (req, res) => {
+	const user = req.user;
+	const isbn = req.body.isbn;
+
+	try {
+		const book = await Book.findOne({
+			available: false,
+			checked_out_by: user._id,
+			isbn: isbn
+		});
+
+		if (!book) {
+			throw new Error('You do not seem to have this book checked out, and cannot return it.')
+		}
+
+		book.available = true;
+		book.checked_out_by = undefined;
+		book.due_date = undefined;
+		const updated_book = await book.save();
+		res.json({success: true, book: updated_book});
+	} catch (e) {
+		res.json({success: false, error: e.message});
+	}
+});
+
 app.use('/api', router);
 
 app.listen(API_PORT, () => console.log('LISTENING ON PORT ' + API_PORT));
