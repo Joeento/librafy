@@ -14,6 +14,7 @@ function userGate(req, res, next) {
     next();
   });
 }
+
 function librarianGate(req, res, next) {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
