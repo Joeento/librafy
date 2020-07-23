@@ -37,7 +37,7 @@ router.get('/books/overdue', auth.librarianGate, async (req, res) => {
     });
     res.json({success: true, books: books});
   } catch (e) {
-    res.json(400, {success: false, error: e.message});
+    res.status(400).json({success: false, error: e.message});
   }
 });
 
@@ -50,7 +50,7 @@ router.post('/books', auth.librarianGate, async (req, res) => {
     let saved_book =  await book.save(book);
     res.json({success: true, book: saved_book});
   } catch (e) {
-    res.json(400, {success: false, error: e.message});
+    res.status(400).json({success: false, error: e.message});
   }
 });
 
@@ -61,7 +61,7 @@ router.delete('/book/:id', auth.librarianGate, async (req, res) => {
 
     res.json({success: true, book_id: id});
   } catch (e) {
-    res.json(400, {success: false, error: e.message});
+    res.status(400).json({success: false, error: e.message});
   }
 });
 
@@ -105,7 +105,7 @@ router.post('/books/checkout', auth.userGate, async (req, res) => {
 		const updated_book = await book.save();
 		res.json({success: true, book: updated_book});
 	} catch (e) {
-		res.json(400, {success: false, error: e.message});
+		res.status(400).json({success: false, error: e.message});
 	}
 });
 
@@ -130,7 +130,7 @@ router.post('/books/return', auth.userGate, async (req, res) => {
 		const updated_book = await book.save();
 		res.json({success: true, book: updated_book});
 	} catch (e) {
-		res.json(400, {success: false, error: e.message});
+		res.status(400).json({success: false, error: e.message});
 	}
 });
 
@@ -145,7 +145,7 @@ router.post('/user/checked-out', auth.userGate, async (req, res) => {
 
 		res.json({success: true, books: books});
 	} catch (e) {
-		res.json(400, {success: false, error: e.message});
+		res.status(400).json({success: false, error: e.message});
 	}
 });
 
