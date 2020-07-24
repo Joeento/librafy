@@ -34,7 +34,15 @@ librafy runs on Node.js and Express, and utilizes a Mongo database, so you will 
 2) Then, start a server using
 
         npm start
-A copy of a dummy DB is available on request.
+NOTE: A copy of a dummy DB is available on request.
+ALSO NOTE: In order to request any of these endpoints you'll need a JWT token to simulate being logged in as either a user or a librarian.  Since there is no login endpoint in the schema, you can copy the ObjectID of your user and run `node commands/encode.js {user_id}` to generate an access token for that user.  When running a request simple include `Authorization: Bearer {access_token}` in the headers.  For example, a request to create a book may look like:
+```curl -X POST \
+  http://localhost:3001/api/books \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc19saWJyYXJpYW4iOnRydWUsIl9pZCI6IjVmMTcyMmQ5MzBkZDk0NWJlMWY1NmZkYiIsImZpcnN0X25hbWUiOiJVc2VyIiwibGFzdF9uYW1lIjoiMSIsInVwZGF0ZWRfYXQiOiIyMDIwLTA3LTIxVDE3OjE2OjE3LjU5M1oiLCJjcmVhdGVkX2F0IjoiMjAyMC0wNy0yMVQxNzoxNjoxNy41OTNaIiwiX192IjowLCJpYXQiOjE1OTU0NDAzNjN9.4JV1XzzQGkJeiNyUIze_EDR6-emrG2Owo5JgRVOH4WM' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'title=Bossypants&isbn=9780316056861&author=Tina%20Fey'
+  ```
 
 ## Next Steps
 
