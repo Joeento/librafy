@@ -54,7 +54,7 @@ router.post('/books', auth.librarianGate, async (req, res) => {
   }
 });
 
-router.delete('/book/:id', auth.librarianGate, async (req, res) => {
+router.delete('/books/:id', auth.librarianGate, async (req, res) => {
   const id = req.params.id;
   try {
     await Book.findByIdAndDelete(id);
@@ -134,7 +134,7 @@ router.post('/books/return', auth.userGate, async (req, res) => {
 	}
 });
 
-router.post('/user/checked-out', auth.userGate, async (req, res) => {
+router.get('/users/checked-out', auth.userGate, async (req, res) => {
 	const user = req.user;
 
 	try {
