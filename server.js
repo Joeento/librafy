@@ -10,7 +10,7 @@ const auth = require('./middleware/auth');
 const Book = require('./models/Book');
 
 const API_PORT = config.api_port;
-const CHECKOUT_TIME = 14;
+const CHECKOUT_TIME = config.checkout_time;
 
 const app = express();
 app.use(cors());
