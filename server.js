@@ -24,23 +24,6 @@ mongoose.connect(config.mongo_url, {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
-router.get('/books/overdue', auth.librarianGate, async (req, res) => {
-  const currentDate = new Date();
-
-  try {
-    const books = await Book.find({
-      available: false,
-      due_date: {
-        $lt: currentDate
-      }
-    });
-    res.json({success: true, books: books});
-  } catch (e) {
-    res.status(400).json({success: false, error: e.message});
-  }
-});
-
 router.post('/books', auth.librarianGate, async (req, res) => {
   const data = req.body;
   data.available = true;
@@ -60,6 +43,22 @@ router.delete('/books/:id', auth.librarianGate, async (req, res) => {
     await Book.findByIdAndDelete(id);
 
     res.json({success: true, book_id: id});
+  } catch (e) {
+    res.status(400).json({success: false, error: e.message});
+  }
+});
+
+router.get('/books/overdue', auth.librarianGate, async (req, res) => {
+  const currentDate = new Date();
+
+  try {
+    const books = await Book.find({
+      available: false,
+      due_date: {
+        $lt: currentDate
+      }
+    });
+    res.json({success: true, books: books});
   } catch (e) {
     res.status(400).json({success: false, error: e.message});
   }
@@ -134,7 +133,7 @@ router.post('/books/return', auth.userGate, async (req, res) => {
 	}
 });
 
-router.get('/users/checked-out', auth.userGate, async (req, res) => {
+router.get('/users/checked-out-books', auth.userGate, async (req, res) => {
 	const user = req.user;
 
 	try {
