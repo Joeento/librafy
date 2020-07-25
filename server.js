@@ -12,9 +12,10 @@ const Book = require('./models/Book');
 const API_PORT = config.api_port;
 const CHECKOUT_TIME = config.checkout_time;
 
-const app = express();
-app.use(cors());
 const router = express.Router();
+const app = express();
+
+app.use(cors());
 
 mongoose.connect(config.mongo_url, {
 	useUnifiedTopology: true,
