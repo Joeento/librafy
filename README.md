@@ -1,4 +1,4 @@
-## 📖 librafy
+# 📖 librafy
 
 Welcome to librafy, an all-in-one API for management of books at your local library!
 
